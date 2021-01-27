@@ -51,8 +51,11 @@ public class CodeGenServiceImpl implements CodeGenService {
     public PageResult<Entity> listTables(TableRequest request) {
         HikariDataSource dataSource = DbUtil.buildFromTableRequest(request);
         Db db = new Db(dataSource);
-
-        Page page = new Page(request.getCurrentPage(), request.getPageSize());
+        Integer currentPage = request.getCurrentPage();
+        if(currentPage != null && currentPage > 0) {
+        	currentPage = currentPage - 1;
+        }
+        Page page = new Page(currentPage, request.getPageSize());
         int start = page.getStartPosition();
         int pageSize = page.getPageSize();
 
